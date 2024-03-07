@@ -13,6 +13,7 @@ h1 {
     padding: 20px;
     margin: 20px auto;
     max-width: 500px;
+    transition: all 0.3s ease-in-out;
 }
 
 #progress-bar-container {
@@ -29,6 +30,41 @@ h1 {
     height: 100%;
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
+}
+
+#todo-input {
+    /* margin-top: 10px; */
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#add-button {
+    /* margin-top: 10px; */
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#add-button:hover {
+    background-color: #4CAF50;
+}
+
+#clear-all-button {
+    /* margin-top: 10px; */
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#clear-all-button:hover {
+    background-color: crimson;
 }
 
 #todo-container li {

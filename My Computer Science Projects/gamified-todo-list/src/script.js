@@ -3,6 +3,7 @@
 */
 const todoInput = document.getElementById("todo-input");
 const addButton = document.getElementById("add-button");
+const clearAllButton = document.getElementById("clear-all-button");
 
 /*
     Add an event listener to the addButton click.
@@ -25,14 +26,42 @@ addButton.addEventListener("click", function() {
     const newTodoItem = document.createElement("li");
     newTodoItem.textContent = newTodoText;
     /*
-        Add the new list item to the to-do list container.
+        Add the new list item to the to-do list container and update progress bar.
     */
     const todoList = document.getElementById("todo-container");
     todoList.appendChild(newTodoItem);
+    updateProgressBar();
     /*
         Clear the input field for the next task.
     */
     todoInput.value = "";
+});
+
+/*
+    Add an event listener to the clearAllButton click.
+*/
+clearAllButton.addEventListener("click", function() {
+    /*
+        Confirm with the user before clearing all tasks.
+    */
+    if (confirm("Are you sure you want to clear all tasks?")) {
+        /*
+            Remove all list items from the to-do list container.
+        */
+        const todoItems = todoList.querySelectorAll("LI");
+        /*
+            Loop through each list item and remove it.
+        */
+        for (let i = 0; i < todoItems.length; i++) {
+            todoList.removeChild(todoItems[i]);
+        }
+        /*
+            Reset the progres bar with width to 0.
+        */
+        const progressBar = document.getElementById("progress-bar");
+        progressBar.style.width = "0%";
+        updateProgressBar();
+    }
 });
 
 /*
