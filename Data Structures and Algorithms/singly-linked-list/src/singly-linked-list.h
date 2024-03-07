@@ -15,13 +15,13 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-void print_linked_list();
-
-void print_linked_list_stats();
-
 bool is_empty();
 
 bool does_contain(int);
+
+void print_linked_list();
+
+void print_linked_list_stats();
 
 void insert_head(int);
 

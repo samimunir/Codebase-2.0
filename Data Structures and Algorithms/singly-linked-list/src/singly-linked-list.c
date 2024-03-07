@@ -19,3 +19,19 @@ bool is_empty() {
         return false;
     }
 }
+
+bool does_contain(int target_data) {
+    if (is_empty()) {
+        return false;
+    } else {
+        struct Node *current_node = head;
+        while (current_node != NULL) {
+            if (current_node -> data == target_data) {
+                return true;
+            }
+            current_node = current_node -> next;
+        }
+        free(current_node);
+        return false;
+    }
+}
