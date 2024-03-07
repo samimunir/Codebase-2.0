@@ -7,8 +7,11 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include "singly-linked-list.h"
 
 int main(int argc, char* argv[]) {
     printf("singly-linked-list\n");
+    printf("------------------\n");
     return EXIT_SUCCESS;
 }

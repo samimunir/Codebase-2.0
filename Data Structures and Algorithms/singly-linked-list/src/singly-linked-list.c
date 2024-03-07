@@ -5,3 +5,9 @@
     singly-linked-list
     - singly-linked-list.c
 */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "singly-linked-list.h"
+
+struct Node *head = NULL;

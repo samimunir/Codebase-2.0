@@ -7,6 +7,11 @@
 */
 #include <stdbool.h>
 
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
 void print_linked_list();
 
 void print_linked_list_stats();
