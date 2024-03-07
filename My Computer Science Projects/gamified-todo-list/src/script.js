@@ -36,9 +36,36 @@ addButton.addEventListener("click", function() {
 });
 
 /*
-    Add an event listener to the to-do list container.
+    Get references to the progress bar element and the list container
 */
+const progressBar = document.getElementById("progress-bar");
 const todoList = document.getElementById("todo-container");
+
+/*
+    Function to update the progress bar width based on completion ratio.
+*/
+function updateProgressBar() {
+    const completedTasks = todoList.querySelectorAll(".completed").length;
+    const totalTasks = todoList.querySelectorAll("LI").length;
+    /*
+        Calculate the progress percentage.
+    */
+    const progress = (completedTasks / totalTasks) * 100;
+    /*
+        Update the progress bar width
+    */
+    progressBar.style.width = `${progress}%`;
+}
+
+/*
+    Update the progress bar initially.
+*/
+updateProgressBar();
+
+/*
+    Add an event listener to the to-do list container.
+    - update the progress bar whenever a task is marked as completed.
+*/
 todoList.addEventListener("click", function(event) {
     /*
         Check if the clicked element is a list item.
@@ -48,5 +75,6 @@ todoList.addEventListener("click", function(event) {
             Toggle a class on the clicked list item to visually mark it as completed.
         */
         event.target.classList.toggle("completed");
+        updateProgressBar();
     }
 });
