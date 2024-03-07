@@ -11,3 +11,11 @@
 #include "singly-linked-list.h"
 
 struct Node *head = NULL;
+
+bool is_empty() {
+    if (head == NULL) {
+        return true;
+    } else {
+        return false;
+    }
+}
