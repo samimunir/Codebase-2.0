@@ -8,6 +8,13 @@ h1 {
     text-align: center;
 }
 
+.timestamp {
+    font-size: 12px;
+    color: #999;
+    float: right;
+    margin-right: 10px;
+}
+
 #todo-container {
     border: 1px solid #ddd;
     padding: 20px;

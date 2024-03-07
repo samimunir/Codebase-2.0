@@ -21,10 +21,19 @@ addButton.addEventListener("click", function() {
         return;
     }
     /*
+        Generate timestamp
+    */
+    const timestamp = getFormattedTimestamp();
+    /*
         Create a new list item element for the new task.
     */
     const newTodoItem = document.createElement("li");
+    newTodoItem.classList.add("todo-item");
     newTodoItem.textContent = newTodoText;
+    const timestampElement = document.createElement("span");
+    timestampElement.classList.add("timestamp");
+    timestampElement.textContent = timestamp;
+    newTodoItem.appendChild(timestampElement);
     /*
         Add the new list item to the to-do list container and update progress bar.
     */
@@ -150,3 +159,14 @@ todoList.addEventListener("click", function(event) {
         updateProgressBar();
     }
 });
+
+/*
+    Function for formatted timestamp generation.
+*/
+function getFormattedTimestamp() {
+    const date = new Date();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+}
