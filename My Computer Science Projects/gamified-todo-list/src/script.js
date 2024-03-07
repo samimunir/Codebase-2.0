@@ -77,13 +77,56 @@ function updateProgressBar() {
     const completedTasks = todoList.querySelectorAll(".completed").length;
     const totalTasks = todoList.querySelectorAll("LI").length;
     /*
-        Calculate the progress percentage.
+        Check if there are any tasks.
     */
-    const progress = (completedTasks / totalTasks) * 100;
-    /*
-        Update the progress bar width
-    */
-    progressBar.style.width = `${progress}%`;
+    if (totalTasks === 0) {
+        /*
+            Set progress to 0 and display default percentage.
+        */
+        const progress = 0;
+        const progressPercentageElement = document.getElementById("progress-percentage");
+        progressPercentageElement.textContent = `${progress.toFixed(1)}%`;
+        if (progress >= 80) {
+            // progressPercentageElement.classList.add("completed-percentage");
+            progressPercentageElement.style.color = "#4CAF50";
+        } else {
+            // progressPercentageElement.classList.remove("completed-percentage");
+            progressPercentageElement.style.color = "crimson";
+        } 
+    } else {
+        /*
+            Calculate the progress percentage.
+        */
+        const progress = (completedTasks / totalTasks) * 100;
+        /*
+            Update the progress bar width.
+        */
+        progressBar.style.width = `${progress}%`;
+        /*
+            Update the percentage text and styling.
+        */
+        const progressPercentageElement = document.getElementById("progress-percentage");
+        progressPercentageElement.textContent = `${progress.toFixed(1)}%`;
+        /*
+            Update the color of the percentage text based on progress.
+        */
+        // if (progress === 100) {
+        //     progressPercentageElement.classList.add("completed-percentage");
+        // } else if (progress >= 50) {
+        //     progressPercentageEl ement.classList.remove("completed-percentage");
+        //     progressPercentageElement.classList.add("completed-half-percentage");
+        // } else {
+        //     progressPercentageElement.classList.remove("completed-half-percentage");
+        //     progressPercentageElement.classList.remove("completed-percentage");
+        // }
+        if (progress >= 80) {
+            // progressPercentageElement.classList.add("completed-percentage");
+            progressPercentageElement.style.color = "#4CAF50";
+        } else {
+            // progressPercentageElement.classList.remove("completed-percentage");
+            progressPercentageElement.style.color = "crimson";
+        }
+    }
 }
 
 /*

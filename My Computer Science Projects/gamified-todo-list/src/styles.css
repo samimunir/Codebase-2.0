@@ -21,7 +21,7 @@ h1 {
     height: 10px;
     background-color: #ddd;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
 #progress-bar {
@@ -30,6 +30,15 @@ h1 {
     height: 100%;
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
+}
+#progress-percentage {
+    display: block;
+    margin-top: 5px;
+    margin-left: 1%;
+    font-weight: bold;
+    /* color: #333; */
+    color: crimson;
+    transition: all 0.3s ease-in-out;
 }
 
 #todo-input {
@@ -81,4 +90,12 @@ h1 {
     background-color: #ddd;
     font-style: italic;
     font-weight: normal;
+}
+
+.completed-half-percentage {
+    color: yellow;
+}
+
+.completed-percentage {
+    color: #4CAF50;
 }
