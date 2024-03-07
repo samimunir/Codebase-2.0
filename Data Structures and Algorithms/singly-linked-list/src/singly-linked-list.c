@@ -35,3 +35,17 @@ bool does_contain(int target_data) {
         return false;
     }
 }
+
+void print_linked_list() {
+    if (is_empty()) {
+        printf("\tHEAD -> NULL\n");
+    } else {
+        struct Node *current_node = head;
+        printf("\tHEAD -> ");
+        while (current_node != NULL) {
+            printf("%d -> ", current_node -> data);
+            current_node = current_node -> next;
+        }
+        printf("NULL\n");
+    }
+}
