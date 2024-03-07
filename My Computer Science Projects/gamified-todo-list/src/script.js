@@ -34,3 +34,19 @@ addButton.addEventListener("click", function() {
     */
     todoInput.value = "";
 });
+
+/*
+    Add an event listener to the to-do list container.
+*/
+const todoList = document.getElementById("todo-container");
+todoList.addEventListener("click", function(event) {
+    /*
+        Check if the clicked element is a list item.
+    */
+    if (event.target.tagName == "LI") {
+        /*
+            Toggle a class on the clicked list item to visually mark it as completed.
+        */
+        event.target.classList.toggle("completed");
+    }
+});
