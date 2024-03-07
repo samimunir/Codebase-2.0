@@ -14,3 +14,16 @@ h1 {
     margin: 20px auto;
     max-width: 500px;
 }
+
+#todo-container li {
+    cursor: default;
+    transition: all 0.3s ease-in-out;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: red;
+    opacity: 0.5;
+    background-color: #ddd;
+    font-style: italic;
+}
