@@ -13,5 +13,6 @@
 int main(int argc, char* argv[]) {
     printf("singly-linked-list\n");
     printf("------------------\n");
+
     return EXIT_SUCCESS;
 }

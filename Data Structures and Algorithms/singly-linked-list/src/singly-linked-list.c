@@ -11,6 +11,7 @@
 #include "singly-linked-list.h"
 
 struct Node *head = NULL;
+unsigned int number_of_nodes = 0;
 
 bool is_empty() {
     if (head == NULL) {
@@ -48,4 +49,9 @@ void print_linked_list() {
         }
         printf("NULL\n");
     }
+}
+
+void print_linked_list_stats() {
+    print_linked_list();
+    printf("\t\tnumber_of_nodes: %d\n", number_of_nodes);
 }
