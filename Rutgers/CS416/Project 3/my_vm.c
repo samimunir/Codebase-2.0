@@ -1,6 +1,20 @@
 #include "my_vm.h"
 
 //TODO: Define static variables and structs, include headers, etc.
+typedef struct page_frame {
+    /*
+        Flag indicating if the page is allocated (1) or free (0).
+    */
+    int allocated;
+    /*
+        Reference count for shared pages (optional).
+    */
+    int ref_count;
+    /*
+        Pointer to the actual data stored in the page frame.
+    */
+    void *data;
+} PageFrame;
 
 void set_physical_mem(){
     //TODO: Finish
