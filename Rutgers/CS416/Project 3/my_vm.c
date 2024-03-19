@@ -1,6 +1,9 @@
 #include "my_vm.h"
 
 //TODO: Define static variables and structs, include headers, etc.
+/*
+    Page frame structure
+*/
 typedef struct page_frame {
     /*
         Flag indicating if the page is allocated (1) or free (0).
