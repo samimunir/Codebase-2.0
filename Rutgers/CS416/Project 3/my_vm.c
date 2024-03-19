@@ -49,6 +49,35 @@ typedef struct page_table {
     PTE entries[MAX_MEMSIZE / PAGE_SIZE];
 } PageTable;
 
+/*
+    Page directory entry (PDE)
+*/
+typedef struct pde {
+    /*
+        Pointer to a child page table (one-level)
+    */
+    PageTable *table;
+    /*
+        Valid bit indicating if the page directory entry is
+            valid (1) or invalid (0).
+    */
+    int valid;
+    /*
+        Additional fields can be added here if needed.
+    */
+} PDE;
+
+/*
+    Top-level page directory.
+*/
+#define NUM_PT_ENTRIES (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))
+typedef struct page_directory {
+    /*
+        Array of PDEs representing entries in the page directoy.
+    */
+    PDE entries[NUM_PT_ENTRIES];
+} PageDirectory;
+
 void set_physical_mem(){
     //TODO: Finish
 }
