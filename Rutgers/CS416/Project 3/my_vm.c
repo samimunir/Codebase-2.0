@@ -19,6 +19,36 @@ typedef struct page_frame {
     void *data;
 } PageFrame;
 
+/*
+    Page table entry (PTE)
+*/
+typedef struct pte {
+    /*
+        Valid bit indicating if the page table entry is valid (1) or invalid (0).
+    */
+    int valid;
+    /*
+        Physical page number this entry maps to.
+    */
+    unsigned int pfn;
+    /*
+        Additional fields can be added here if needed.
+        - permissions (read-only, write-only)
+    */
+} PTE;
+
+/*
+    Page table (one-level)
+    - assuming a page size of 4KB
+*/
+# define PAGE_SIZE 4096
+typedef struct page_table {
+    /*
+        Array of PTEs representing entries in the page table.
+    */
+    PTE entries[MAX_MEMSIZE / PAGE_SIZE];
+} PageTable;
+
 void set_physical_mem(){
     //TODO: Finish
 }
