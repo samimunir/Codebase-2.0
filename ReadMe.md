@@ -8,3 +8,9 @@ Sami Munir | Rutgers University | Codebase 2.0
 ### 2. Data Structures and Algorithms
 * singly-linked-list - *C*
     * singly-linked-list.c
+* doubly-linked-list - *C*
+* linked-list-stack - *C*
+### 3. Rutgers
+* __CS210__
+* __CS416__
+    * Project 3 - Virtualizing Memory
