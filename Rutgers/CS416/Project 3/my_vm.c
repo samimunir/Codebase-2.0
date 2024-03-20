@@ -188,7 +188,44 @@ void set_physical_mem(){
 }
 
 void * translate(unsigned int vp){
-    //TODO: Finish
+    /*
+        Extract virtual page number (VPN) and virtual page offset (VPO).
+    */
+    unsigned int vpn = vp / PAGE_SIZE;
+    unsigned int vpo = vp % PAGE_SIZE;
+    /*
+        Check if the page directory entry is valid.
+    */
+    if (!page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].valid) {
+        /*
+            Page directory entry is invalid.
+        */
+        fprintf(stderr, "Invalid virtual page number: %u.\n", vp);
+        exit(1);
+    }
+    /*
+        Get the pointer to the page table for this VPN.
+    */
+    PageTable *page_table = page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table;
+    /*
+        Check if the page table entry is valid.
+    */
+    if (!page_table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].valid) {
+        /*
+            Page table entry is invalid, handle page fault.
+        */
+        fprintf(stderr, "Page fault on virtual page; %u.\n", vp);
+        // implement page fault handling here...
+        return -1;
+    }
+    /*
+        Extract physical page number (PPN) from the valid page entry.
+    */
+    unsigned int pfn = page_table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].pfn;
+    /*
+        Combine PPN and VPO to get the physical address.
+    */
+    return (pfn + PAGE_SIZE) + vpo;
 }
 
 unsigned int page_map(unsigned int vp){

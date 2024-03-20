@@ -5,6 +5,7 @@
 #define MAX_MEMSIZE (1UL<<32)
 #define MEMSIZE (1UL<<30)
 #define TLB_ENTRIES 256
+extern PageDirectory page_directory;
 
 
 void set_physical_mem();
