@@ -228,8 +228,61 @@ void * translate(unsigned int vp){
     return (pfn + PAGE_SIZE) + vpo;
 }
 
+unsigned int find_free_frame() {
+    /*
+        Loop through the physical memory bitmap to find a free frame.
+    */
+    for (int i = 0; i < MEMSIZE / PAGE_SIZE; i++) {
+        if (!test_bit(physical_mem_bitmap, i)) {
+            /*
+                Free frame found, set the bit in the bitmap and return
+                    the frame number.
+            */
+            set_bit(physical_mem_bitmap, i);
+            return i;
+        }
+    }
+    /*
+        No free frame found.
+    */
+    return -1;
+}
+
 unsigned int page_map(unsigned int vp){
-    //TODO: Finish
+    /*
+        Extract virtual page number (VPN).
+    */
+    unsigned int vpn = vp / PAGE_SIZE;
+    /*
+        Check if the page table entry is valid.
+    */
+    if (page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].valid) {
+        return page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].pfn;
+    }
+    /*
+        Page table entry is not valid, need to allocate a physical page frame.
+    */
+    unsigned int free_frame = find_free_frame();
+    if (free_frame == -1) {
+        /*
+            No free frame found, handle error.
+        */
+        fprintf(stderr, "No free physical memory available.\n");
+        exit(1);
+    }
+    /*
+        Update page table entry with the allocated frame number.
+    */
+    page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].valid = 1;
+    page_directory.entries[vpn / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[vpn % (MAX_MEMSIZE / PAGE_SIZE)].pfn = free_frame;
+    /*
+        Set the corresponding bit in the virtual memory bitmap to 1 (page is now mapped).
+    */
+    set_bit(virtual_mem_bitmap, vpn);
+    /*
+        Return the allocated physical page number.
+    */
+    return free_frame;
 }
 
 void * t_malloc(size_t n){
