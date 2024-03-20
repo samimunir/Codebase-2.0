@@ -121,6 +121,10 @@ typedef struct tlb_entry {
 */
 #define BITMAP_SIZE(memsize) ((memsize) / 8)
 /*
+    Physical memory variable.
+*/
+char *physical_mem;
+/*
     Physical memory bitmap.
 */
 char *physical_mem_bitmap;
@@ -148,7 +152,39 @@ int test_bit(char *bitmap, unsigned int bit_num) {
 }
 
 void set_physical_mem(){
-    //TODO: Finish
+    /*
+        Allocate memory to simulate physical RAM.
+    */
+    physical_mem = malloc(MEMSIZE);
+    if (physical_mem == NULL) {
+        fprintf(stderr, "Failed to allocate physical memory.\n");
+        exit(1);
+    }
+    /*
+        Initialize the physical memory bitmap.
+    */
+    physical_mem_bitmap = malloc(BITMAP_SIZE(MEMSIZE));
+    if (physical_mem_bitmap == NULL) {
+        fprintf(stderr, "Failed to allocate physical memory bitmap.\n");
+        exit(1);
+    }
+    /*
+        Initialize all bits in the bitmap to 1 (assuming all pages
+            are initially free).
+    */
+    memset(physical_mem_bitmap, 0xFF, BITMAP_SIZE(MEMSIZE));
+    /*
+        Initialize the virtual memory bitmap (assuming a one-level
+            page table).
+    */
+    virtual_mem_bitmap = malloc(BITMAP_SIZE(MAX_MEMSIZE / PAGE_SIZE));
+    if (virtual_mem_bitmap == NULL) {
+        free(physical_mem);
+        free(physical_mem_bitmap);
+        fprintf(stderr, "Failed to allocate virtual memory bitmap.\n");
+        exit(1);
+    }
+    memset(virtual_mem_bitmap, 0, BITMAP_SIZE(MAX_MEMSIZE / PAGE_SIZE));
 }
 
 void * translate(unsigned int vp){
