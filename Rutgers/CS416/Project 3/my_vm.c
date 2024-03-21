@@ -323,7 +323,25 @@ unsigned int find_free_virtual_pages(unsigned int num_pages) {
 }
 
 void * t_malloc(size_t n){
-    //TODO: Finish
+    /*
+        Calculate the number of virtual pages required (round up).
+    */
+    unsigned int num_pages = (n + PAGE_SIZE - 1) / PAGE_SIZE;
+    /*
+        Find a contiguous block of free virtual pages.
+    */
+    unsigned int start_vpn = find_free_virtual_pages(num_pages);
+    if (start_vpn == -1) {
+        /*
+            No enough contiguous free virtual pages, handle error (e.g., out of memory).
+        */
+        fprintf(stderr, "Not enough contiguous free virtual memory.\n");
+        return NULL;
+    }
+    /*
+        Calculate and return the starting virtual address for the allocated memory.
+    */
+    return (void*) (start_vpn * PAGE_SIZE);
 }
 
 int t_free(unsigned int vp, size_t n){
