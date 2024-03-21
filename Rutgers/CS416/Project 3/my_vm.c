@@ -345,7 +345,45 @@ void * t_malloc(size_t n){
 }
 
 int t_free(unsigned int vp, size_t n){
-    //TODO: Finish
+    /*
+        Check if the virtual page number (vp) is within the valid virtual memory range.
+    */
+    if (vp >= MAX_MEMSIZE / PAGE_SIZE) {
+        fprintf(stderr, "Invalid virtual page number for free.\n");
+        return;
+    }
+    /*
+        Loop through n virtual pages starting from vp.
+    */
+    for (int i = 0; i < n; i++) {
+        /*
+            Check if we reached the end of a valid allocation (invalid page table entry).
+        */
+        if (!page_directory.entries[vp + i / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[i % (MAX_MEMSIZE / PAGE_SIZE)].valid) {
+            fprintf(stderr, "Trying to free unallocated memory.\n");
+            return; // trying to free memory that wasn't allocated.
+        }
+        /*
+            Free the physical frame assocaited with the virtual page.
+        */
+        unsigned int pfn = page_directory.entries[vp + i / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table->entries[i % (MAX_MEMSIZE / PAGE_SIZE)].pfn;
+        /*
+            Implement logic to free the physical frame (e.g., clear the corresponding bit in the physical memory bitmap).
+        */
+        /*
+            Invalidate the page table entry.
+        */
+        page_directory.entries[vp + i / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table -> entries[i % (MAX_MEMSIZE / PAGE_SIZE)].valid = 0;
+    }
+    /*
+        Clear the corresponding bits in the virtual memory bitmap for the free pages.
+    */
+    for (int i = vp; i < vp + n; i++) {
+        if (!test_bit(virtual_mem_bitmap, i)) {
+            break; // reached the end of the allocated block (already cleared bits).
+        }
+        clear_bit(virtual_mem_bitmap, i);
+    }
 }
 
 int put_value(unsigned int vp, void *val, size_t n){
