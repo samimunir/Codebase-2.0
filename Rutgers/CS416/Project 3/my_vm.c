@@ -285,6 +285,43 @@ unsigned int page_map(unsigned int vp){
     return free_frame;
 }
 
+unsigned int find_free_virtual_pages(unsigned int num_pages) {
+    /*
+        Loop through the virtual memory bitmap to find a contiguous block of free pages. 
+    */
+    for (int i = 0; i < MAX_MEMSIZE / PAGE_SIZE; i++) {
+        /*
+            Check if there are enough consecutive free pages starting from this position.
+        */
+        if (test_bit(virtual_mem_bitmap, i)) {
+            continue; // skip if current bit is not free.
+        }
+        int free_count = 1;
+        for (int j = 1; j < num_pages; j++) {
+            if (test_bit(virtual_mem_bitmap, i + j)) {
+                break; // not enough consecutive free pages, restart search.
+            }
+            free_count++;
+        }
+        if (free_count == num_pages) {
+            /*
+                Contiguous block found, set bits in the bitmap and return starting VPN.
+            */
+            for (int j = 0; j < num_pages; j++) {
+                set_bit(virtual_mem_bitmap, i + j);
+            }
+            return i;
+        }
+        /*
+            Not enough contiguous free pages starting from this position, continue search.
+        */
+    }
+    /*
+        No contiguous block found.
+    */
+    return -1;
+}
+
 void * t_malloc(size_t n){
     //TODO: Finish
 }
