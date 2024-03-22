@@ -386,8 +386,75 @@ int t_free(unsigned int vp, size_t n){
     }
 }
 
+void handle_page_fault(unsigned int vp) {
+  // Find a free physical frame (implement logic to find a free pfn)
+  unsigned int pfn = allocate_physical_frame(); 
+  if (pfn == -1) {
+    // No free physical frame available, handle error (e.g., out-of-memory)
+    fprintf(stderr, "Failed to allocate physical frame for page fault\n");
+    return;
+  }
+
+  // Load the missing page from secondary storage (e.g., disk)
+  unsigned int offset = vp % (PAGE_SIZE / sizeof(unsigned char)); // Calculate offset within the page
+  // Implement logic to load the page data (size: PAGE_SIZE) from disk into the physical memory at 'pfn * PAGE_SIZE'
+  // ... (implementation details for loading page data from disk) ...
+
+  // Update the page table entry for the virtual page
+  page_directory.entries[vp / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table->entries[vp % (MAX_MEMSIZE / PAGE_SIZE)].pfn = pfn;
+  page_directory.entries[vp / (MAX_MEMSIZE / (PAGE_SIZE * sizeof(PageTable)))].table->entries[vp % (MAX_MEMSIZE / PAGE_SIZE)].valid = 1;
+}
+
+// Function to allocate a free physical frame (implementation omitted)
+unsigned int allocate_physical_frame() {
+  // Implement logic to search the physical memory bitmap and find a free physical frame
+  // You can use the test_bit function to check for free bits
+
+  // ... (implementation details for finding a free physical frame) ...
+
+  // If no free frame is found, return -1
+  // Loop through all physical frames (using MAX_MEMSIZE and PAGE_SIZE)
+  for (int i = 0; i < MAX_MEMSIZE / PAGE_SIZE; i++) {
+    // Check if the current frame is free using test_bit
+    if (!test_bit(physical_mem_bitmap, i)) {
+      // Set the corresponding bit in the bitmap to mark the frame as allocated
+      set_bit(physical_mem_bitmap, i);
+      return i; // Return the physical frame number (pfn)
+    }
+  }
+
+  // No free frame found
+  return -1;
+}
+
 int put_value(unsigned int vp, void *val, size_t n){
-    //TODO: Finish
+    /*
+        Translate virtual page number (vp) to physical frame number (pfn).
+    */
+    unsigned int pfn = translate(vp);
+    /*
+        Check for page faults (pfn == -1).
+    */
+    if (pfn == -1) {
+        // handle page fault (e.g., call handle_page_fault)
+        handle_page_fault(vp);
+        /*
+            Retry translation after handling the page fault.
+        */
+        pfn = translate(vp);
+        if (pfn == -1) {
+            // page fault not resolved, handle error.
+            fprintf(stderr, "Failed to handle page fault for virtual page %u.\n", vp);
+            return;
+        }
+    }
+    // calculate physical address.
+    unsigned int physical_addr = pfn * PAGE_SIZE + (vp % (PAGE_SIZE / sizeof(unsigned int))) * sizeof(unsigned int);
+    // use a byte-based loop for flexibility with data types.
+    for (size_t i = 0; i < n; i++) {
+        *(unsigned char*) (physical_addr + i) = *(unsigned char*) (val + i);
+    }
+    return 0; // indicate success.
 }
 
 int get_value(unsigned int vp, void *dst, size_t n){
