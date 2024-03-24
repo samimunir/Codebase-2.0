@@ -81,6 +81,8 @@ typedef struct pde {
 // TLB data structure (assuming a fixed-size TLB)
 static TLBEntry tlb[TLB_SIZE]; // Replace TLB_SIZE with your desired size
 static int tlb_index = 0; // Index for the next TLB entry
+unsigned int tlb_misses = 0;
+unsigned int total_translations = 0;
 
 /*
     Top-level page directory.
@@ -487,7 +489,37 @@ int get_value(unsigned int vp, void *dst, size_t n){
 }
 
 void mat_mult(unsigned int a, unsigned int b, unsigned int c, size_t l, size_t m, size_t n){
-    //TODO: Finish
+  // Argument validation (optional)
+  if (l != m || m != n) {
+    fprintf(stderr, "Error: Matrix dimensions incompatible for multiplication\n");
+    return;
+  }
+
+  // Loop through elements of the resulting matrix
+  for (size_t i = 0; i < l; i++) {
+    for (size_t j = 0; j < n; j++) {
+      int sum = 0;
+      // Loop through elements in a row of the resulting matrix
+      unsigned int result_addr;
+      for (size_t k = 0; k < m; k++) {
+        // Calculate virtual addresses
+        unsigned int addr1 = a + i * m * sizeof(int) + k * sizeof(int);
+        unsigned int addr2 = b + k * m * sizeof(int) + j * sizeof(int);
+        result_addr = c + i * n * sizeof(int) + j * sizeof(int);
+
+        // Access elements using get_value (passing additional arguments)
+        int element1 = get_value(addr1, &element1, sizeof(int)); // Address of element1 to store value
+        int element2 = get_value(addr2, &element2, sizeof(int)); // Address of element2 to store value
+        if (element1 == -1 || element2 == -1) { // Handle errors from get_value
+          fprintf(stderr, "Error: Page fault while reading matrices\n");
+          return;
+        }
+        sum += element1 * element2;
+      }
+      // Write the calculated value to the resulting matrix using put_value
+      put_value(result_addr, &sum, sizeof(int)); // Pass address of sum for writing
+    }
+  }
 }
 
 // Function to check if TLB is full
@@ -520,9 +552,18 @@ void add_TLB(unsigned int vpage, unsigned int ppage){
 }
 
 int check_TLB(unsigned int vpage){
-    //TODO: Finish
+    // Loop through all TLB entries
+  for (int i = 0; i < TLB_SIZE; i++) {
+    // Check if the virtual page number in the TLB entry matches the provided vpn
+    if (tlb[i].vpn == vpage) {
+      return true; // TLB hit
+    }
+  }
+  return false; // TLB miss
 }
 
 void print_TLB_missrate(){
-    //TODO: Finish
+    // Calculate miss rate (assuming total number of translations is tracked)
+  float miss_rate = (float)tlb_misses / total_translations;
+  printf("TLB miss rate: %.2f%%\n", miss_rate * 100.0f);
 }
