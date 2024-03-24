@@ -78,6 +78,10 @@ typedef struct pde {
     */
 } PDE;
 
+// TLB data structure (assuming a fixed-size TLB)
+static TLBEntry tlb[TLB_SIZE]; // Replace TLB_SIZE with your desired size
+static int tlb_index = 0; // Index for the next TLB entry
+
 /*
     Top-level page directory.
     - this structure defines the top-level page directory using an
@@ -486,8 +490,33 @@ void mat_mult(unsigned int a, unsigned int b, unsigned int c, size_t l, size_t m
     //TODO: Finish
 }
 
+// Function to check if TLB is full
+bool tlb_isFull() {
+  // Check if the index is at the end of the TLB (or one before to avoid overwriting)
+  return (tlb_index == TLB_SIZE - 1);
+}
+
+// Function to evict an entry from TLB (LRU implementation)
+void evict_TLB_entry() {
+  // Since we don't have additional information about usage frequency,
+  // a simple FIFO (First-In-First-Out) eviction can be used here.
+  // You can implement LRU (Least Recently Used) for potentially better performance
+  // if you can track usage information.
+
+  // Move the index back by one (wrapping around if necessary)
+  tlb_index = (tlb_index == 0) ? TLB_SIZE - 1 : tlb_index - 1;
+}
+
 void add_TLB(unsigned int vpage, unsigned int ppage){
-    //TODO: Finish
+    // Check if there's space available in the TLB
+  if (tlb_isFull()) {
+    // Implement TLB replacement policy (e.g., FIFO, LRU) to evict an entry
+    evict_TLB_entry();
+  }
+
+  // Add the new entry to the TLB data structure
+  tlb[tlb_index] = (TLBEntry){vpage, ppage};
+  tlb_index = (tlb_index + 1) % TLB_SIZE; // Update index for next entry
 }
 
 int check_TLB(unsigned int vpage){
