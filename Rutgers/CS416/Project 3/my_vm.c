@@ -458,7 +458,28 @@ int put_value(unsigned int vp, void *val, size_t n){
 }
 
 int get_value(unsigned int vp, void *dst, size_t n){
-    //TODO: Finish
+    // Translate virtual page number (vp) to physical frame number (pfn)
+  unsigned int pfn = translate(vp);
+
+  // Check for page faults (pfn == -1)
+  if (pfn == -1) {
+    // Handle page fault (e.g., call handle_page_fault)
+    handle_page_fault(vp);
+    // Retry translation after handling the page fault
+    pfn = translate(vp);
+    if (pfn == -1) {
+      // Page fault not resolved, handle error (return a specific value?)
+      fprintf(stderr, "Failed to handle page fault for virtual page %u\n", vp);
+      // Consider returning a special value to indicate error (e.g., -1)
+      return -1;
+    }
+  }
+
+  // Calculate physical address
+  unsigned int physical_addr = pfn * PAGE_SIZE + (vp % (PAGE_SIZE / sizeof(unsigned int))) * sizeof(unsigned int);
+
+  // Read the value from the physical memory address
+  return *(unsigned int*)physical_addr;
 }
 
 void mat_mult(unsigned int a, unsigned int b, unsigned int c, size_t l, size_t m, size_t n){
