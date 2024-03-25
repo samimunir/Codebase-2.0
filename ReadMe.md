@@ -12,5 +12,7 @@ Sami Munir | Rutgers University | Codebase 2.0
 * linked-list-stack - *C*
 ### 3. Rutgers
 * __CS210__
+    * Assignment 3
 * __CS416__
     * Project 3 - Virtualizing Memory
+### 4. Python Mastery 2024
