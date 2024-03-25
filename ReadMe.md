@@ -16,3 +16,4 @@ Sami Munir | Rutgers University | Codebase 2.0
 * __CS416__
     * Project 3 - Virtualizing Memory
 ### 4. Python Mastery 2024
+* __pandas__
