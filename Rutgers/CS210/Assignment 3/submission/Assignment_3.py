@@ -114,9 +114,42 @@ def calculate_average_ratings(ratings_df):
     return average_ratings
 
 # Part 1.6
+"""
+Write a function named highest_rated_movie_by_genre_and_year(movies_df, ratings_df,
+    genre, year) that takes four parameters:
+    1) movies_df: a pandas DataFrame containing movie data with columns "title", "year",
+        and "genre" (created in 1.1).
+    2) ratings_df: a pandas DataFrame containing ratings data with columns "user_id",
+        "movie_id", and "rating" (created in 1.2).
+    3) genre (str): the genre to filter movies by.
+    4) year (int or str): the year to filter movies by.
+
+    Definition of highest-rated: for the purpose of this function, a highest-rated movie
+    is defined by its average rating, calculated from all the ratings it has received in
+    the ratings_df.
+
+    In cases where multiple movies share the same highest average rating for the specified
+    genre and year, the movie with the greater number of ratings should be returned as the
+    highest-rated movie. If no movies match the specified genre and year criteria, or if all 
+    movies in the category have not received any ratings, the function should return None.
+"""
+def highest_rated_movie_id_by_genre_and_year(movies_df, ratings_df, genre, year):
+    filtered_movies = movies_df[(movies_df['genre'] == genre)]
+    filtered_movies_by_year = filtered_movies[(filtered_movies['year'] == year)]
+    if filtered_movies_by_year.empty:
+        print('\nfiltered_movies_by_year is empty...\n')
+        return None
+    merged_dataframe = pd.merge(filtered_movies_by_year, ratings_df, left_on=filtered_movies_by_year.index, right_on='movie_id')
+    movie_stats = merged_dataframe.groupby('movie_id')['rating'].agg(['mean', 'count'])
+    sorted_movie_stats = movie_stats.sort_values(by=['mean', 'count'], ascending=False)
+    highest_rated_movie_id = sorted_movie_stats.index[0]
+    print('\nhighest_rated_movie_id:', highest_rated_movie_id, '\n')
+    return highest_rated_movie_id
+
 
 movies_dataframe = load_movies_dataframe(r'data\moviesSample.txt')
 movies_ratings_dataframe = load_ratings_dataframe(r'data\ratingsSample.csv')
 # unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
-average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
-calculate_average_ratings(ratings_df=movies_ratings_dataframe)
+# average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
+# calculate_average_ratings(ratings_df=movies_ratings_dataframe)
+highest_rated_movie_id_by_genre_and_year(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe, genre='Action', year=1995)
