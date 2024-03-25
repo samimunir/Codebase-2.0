@@ -61,6 +61,36 @@ def count_unique_genres(movies_df):
     return unique_count
 
 # Part 1.4
+"""
+Write a function average_rating_by_genre(movies_df, ratings_df) that
+    performs an analysis on the movie ratings dataset. Your function
+    will take two pandas DataFrames as input:
+    - 1) movies data (movies_df)
+    - 2) ratings data (ratings_df)
+    Your goal is to calculate the average rating received by movies in
+    each genre. Both DataFrames are created in 1.1 and 1.2.
+
+    Given that each movie is associated with a single genre in the movies_df
+    DataFrame, and that movies_df is indexed by movie_id, you will need to
+    merge this DataFrame with ratings_df, which contains ratings for each movie.
+    After merging, calculate the average rating for movies in each genre and return
+    the result as a pandas Series. The index of the Series should be the genre, and
+    the value should be the average rating for that genre.
+
+    Your goal is to calculate the average rating received by movies within each genre.
+    The calculation should aggregate all ratings for all movies in a genre and then
+    compute the average of these ratings. The means you should not calculate the average
+    rating per movie and then average those averages across a genre; instead, all individual
+    ratings for movies within each genre should be averaged together directly.
+"""
+def average_rating_by_genre(movies_df, ratings_df):
+    print('\nmovies_df ->\n', movies_df)
+    print('\nratings_df ->\n', ratings_df)
+    merged_dataframe = pd.merge(movies_df, ratings_df, left_on=movies_df.index, right_on='movie_id')
+    print('\nmerged_dataframe ->\n', merged_dataframe)
+    rating_by_genre_avg = merged_dataframe.groupby('genre')['rating'].mean()
+    print('\nrating_by_genre_avg ->\n', rating_by_genre_avg)
+    return rating_by_genre_avg
 
 # Part 1.5
 
@@ -68,4 +98,5 @@ def count_unique_genres(movies_df):
 
 movies_dataframe = load_movies_dataframe(r'data\moviesSample.txt')
 movies_ratings_dataframe = load_ratings_dataframe(r'data\ratingsSample.csv')
-unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
+# unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
+average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
