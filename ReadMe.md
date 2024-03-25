@@ -17,3 +17,5 @@ Sami Munir | Rutgers University | Codebase 2.0
     * Project 3 - Virtualizing Memory
 ### 4. Python Mastery 2024
 * __pandas__
+    * Hello World
+    * Reading in Files
