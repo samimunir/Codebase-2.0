@@ -31,7 +31,7 @@ Write a function load_movies_dataframe(file_path) that takes in a
 def load_movies_dataframe(file_path):
     movies_dataframe = pd.read_table(file_path, sep='|', header=None, names=["title", "year", "genre"])
     sorted_movies_dataframe = movies_dataframe.sort_values(by='title', ascending=True)
-    # print('\nsorted_movies_dataframe ->\n', sorted_movies_dataframe)
+    print('\nsorted_movies_dataframe ->\n', sorted_movies_dataframe)
     return sorted_movies_dataframe
 
 # Part 1.2
@@ -43,7 +43,7 @@ Write a function load_ratings_dataframe(file_path) that reads a
 def load_ratings_dataframe(file_path):
     ratings_dataframe = pd.read_csv(file_path, header=None, names=["user_id", "movie_id", "rating"])
     sorted_ratings_dataframe = ratings_dataframe.sort_values(by='user_id', ascending=True)
-    # print('\nsorted_ratings_dataframe ->\n', sorted_ratings_dataframe)
+    print('\nsorted_ratings_dataframe ->\n', sorted_ratings_dataframe)
     return sorted_ratings_dataframe
 
 # Part 1.3
@@ -93,6 +93,25 @@ def average_rating_by_genre(movies_df, ratings_df):
     return rating_by_genre_avg
 
 # Part 1.5
+"""
+Write a function named calculate_average_ratings(ratings_df) that takes a pandas
+    DataFrame as input: ratings_df (created in 1.2).
+
+    Your function should return a pandas Series where the index represents the
+    movie_id and each value is the average rating of the corresponding movie.
+
+    For example:
+    1 3.8333333
+    2 3.4166667
+    3 4.0000000
+
+    This Series will allow easy access to the average rating of each movie by using
+    its movie_id.
+"""
+def calculate_average_ratings(ratings_df):
+    average_ratings = ratings_df.groupby('movie_id')['rating'].mean()
+    print('\naverage_ratings ->\n', average_ratings)
+    return average_ratings
 
 # Part 1.6
 
@@ -100,3 +119,4 @@ movies_dataframe = load_movies_dataframe(r'data\moviesSample.txt')
 movies_ratings_dataframe = load_ratings_dataframe(r'data\ratingsSample.csv')
 # unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
 average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
+calculate_average_ratings(ratings_df=movies_ratings_dataframe)
