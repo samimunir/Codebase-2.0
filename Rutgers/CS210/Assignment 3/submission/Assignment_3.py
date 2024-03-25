@@ -31,10 +31,20 @@ Write a function load_movies_dataframe(file_path) that takes in a
 def load_movies_dataframe(file_path):
     movies_dataframe = pd.read_table(file_path, sep='|', header=None, names=["title", "year", "genre"])
     sorted_movies_dataframe = movies_dataframe.sort_values(by='title', ascending=True)
-    # print('sorted_movies_dataframe ->\n', sorted_movies_dataframe)
+    # print('\nsorted_movies_dataframe ->\n', sorted_movies_dataframe)
     return sorted_movies_dataframe
 
 # Part 1.2
+"""
+Write a function load_ratings_dataframe(file_path) that reads a
+    ratings .csv file into a pandas DataFrame with columns "user_id",
+    "movie_id", and "rating", sorted by the user ID (use default index).
+"""
+def load_ratings_dataframe(file_path):
+    ratings_dataframe = pd.read_csv(file_path, header=None, names=["user_id", "movie_id", "rating"])
+    sorted_ratings_dataframe = ratings_dataframe.sort_values(by='user_id', ascending=True)
+    # print('\nsorted_ratings_dataframe ->\n', sorted_ratings_dataframe)
+    return sorted_ratings_dataframe
 
 # Part 1.3
 
@@ -45,3 +55,4 @@ def load_movies_dataframe(file_path):
 # Part 1.6
 
 load_movies_dataframe(r'data\moviesSample.txt')
+load_ratings_dataframe(r'data\ratingsSample.csv')
