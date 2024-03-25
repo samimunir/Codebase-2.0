@@ -1,0 +1,10 @@
+11|The American President|1995|Comedy
+12|Dracula: Dead and Loving It|1995|Comedy
+13|Balto|1995|Animation
+14|Nixon|1995|Drama
+15|Cutthroat Island|1995|Action
+16|Casino|1995|Drama
+17|Sense and Sensibility|1995|Drama
+18|Four Rooms|1995|Comedy
+20|Ace Ventura: When Nature Calls|1995|Comedy
+19|Money Train|1995|Action

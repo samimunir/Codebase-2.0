@@ -19,3 +19,4 @@ Sami Munir | Rutgers University | Codebase 2.0
 * __pandas__
     * Hello World
     * Reading in Files
+    * Filtering & Ordering
