@@ -47,6 +47,18 @@ def load_ratings_dataframe(file_path):
     return sorted_ratings_dataframe
 
 # Part 1.3
+"""
+Write a function named count_unique_genres(movies_df) that takes a
+    pandas DataFrame as input and returns the count of unique genres
+    available in the movies dataset. This function should work on the
+    DataFrame loaded by your previously defined load_movies_dataframe()
+    function.
+"""
+def count_unique_genres(movies_df):
+    movies_dataframe = movies_df
+    unique_count = len(pd.unique(movies_dataframe['genre']))
+    print('\nunique_count:', unique_count, '\n')
+    return unique_count
 
 # Part 1.4
 
@@ -54,5 +66,6 @@ def load_ratings_dataframe(file_path):
 
 # Part 1.6
 
-load_movies_dataframe(r'data\moviesSample.txt')
-load_ratings_dataframe(r'data\ratingsSample.csv')
+movies_dataframe = load_movies_dataframe(r'data\moviesSample.txt')
+movies_ratings_dataframe = load_ratings_dataframe(r'data\ratingsSample.csv')
+unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
