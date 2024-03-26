@@ -30,8 +30,13 @@ Write a function load_movies_dataframe(file_path) that takes in a
 """
 def load_movies_dataframe(file_path):
     movies_dataframe = pd.read_table(file_path, sep='|', header=None, names=["title", "year", "genre"])
-    sorted_movies_dataframe = movies_dataframe.sort_values(by='title', ascending=True)
-    print('\nsorted_movies_dataframe ->\n', sorted_movies_dataframe)
+    sorted_movies_dataframe = movies_dataframe.sort_index()
+    # print('\nsorted_movies_dataframe ->\n', sorted_movies_dataframe)
+    # print(sorted_movies_dataframe.shape)
+    # print(sorted_movies_dataframe.iloc[2, 2])
+    # print(sorted_movies_dataframe.loc[6, 'title'])
+    # print(sorted_movies_dataframe.columns)
+    # print(sorted_movies_dataframe.index)
     return sorted_movies_dataframe
 
 # Part 1.2
@@ -44,6 +49,10 @@ def load_ratings_dataframe(file_path):
     ratings_dataframe = pd.read_csv(file_path, header=None, names=["user_id", "movie_id", "rating"])
     sorted_ratings_dataframe = ratings_dataframe.sort_values(by='user_id', ascending=True)
     print('\nsorted_ratings_dataframe ->\n', sorted_ratings_dataframe)
+    print(sorted_ratings_dataframe.shape)
+    print(sorted_ratings_dataframe.iloc[3, 0])
+    print(sorted_ratings_dataframe.iloc[3, 1])
+    print(sorted_ratings_dataframe.columns)
     return sorted_ratings_dataframe
 
 # Part 1.3
@@ -149,7 +158,7 @@ def highest_rated_movie_id_by_genre_and_year(movies_df, ratings_df, genre, year)
 
 movies_dataframe = load_movies_dataframe(r'data\moviesSample.txt')
 movies_ratings_dataframe = load_ratings_dataframe(r'data\ratingsSample.csv')
-# unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
-# average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
-# calculate_average_ratings(ratings_df=movies_ratings_dataframe)
+unique_genre_count = count_unique_genres(movies_df=movies_dataframe)
+average_rating_by_genre(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe)
+calculate_average_ratings(ratings_df=movies_ratings_dataframe)
 highest_rated_movie_id_by_genre_and_year(movies_df=movies_dataframe, ratings_df=movies_ratings_dataframe, genre='Action', year=1995)
