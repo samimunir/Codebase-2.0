@@ -28,9 +28,16 @@ def get_aircrafts_from_airline(aircrafts_dataframe, airline):
     print(filtered_aircrafts_dataframe)
     return filtered_aircrafts_dataframe
 
+def get_aircrafts_from_manufacturer(aircrafts_dataframe, ac_manufacturer):
+    filtered_aircrafts_dataframe = aircrafts_dataframe[(aircrafts_dataframe['AC_NAME'].str.contains(ac_manufacturer))]
+    print(f'\naircrafts from manufacturer: {ac_manufacturer} ->\n--------------------------------------')
+    print(filtered_aircrafts_dataframe)
+    return filtered_aircrafts_dataframe
+
 def exec_pandas():
     aircrafts_dataframe = load_and_print_dataframe()
-    # print_dataframe_info(aircrafts_dataframe=aircrafts_dataframe)
+    print_dataframe_info(aircrafts_dataframe=aircrafts_dataframe)
     get_aircrafts_from_airline(aircrafts_dataframe=aircrafts_dataframe, airline='United Airlines')
+    get_aircrafts_from_manufacturer(aircrafts_dataframe=aircrafts_dataframe, ac_manufacturer='Airbus')
 
 exec_pandas()
