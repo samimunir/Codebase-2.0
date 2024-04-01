@@ -13,5 +13,6 @@
 
 int main() {
     printf("Hello world!\n");
+    printf("I am learning programming in C.");
     return 0;
 }
