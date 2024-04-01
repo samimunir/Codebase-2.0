@@ -58,12 +58,18 @@ int main() {
     */
     bool flag = true;
     /*
-        short int short_int
+        short int
         - (-32,768 to +32,767)
         - %d
         - 2 bytes
     */
     short int short_int = 2;
+    /*
+        unsigned int
+        - %u
+        - 4 bytes
+    */
+    unsigned int z = 11;
 
     return 0;
 }
