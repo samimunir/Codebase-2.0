@@ -24,9 +24,10 @@ print('\n', csv_data_frame[csv_data_frame['MOVIE'].isin(specific_movies)])
 # printing out user IDs from that are <= 10.
 print('\n', csv_data_frame[csv_data_frame['USER'] <= 10])
 
-csv_data_frame_v2 = csv_data_frame.set_index('USER')
-print('\n', csv_data_frame_v2.filter(items=['MOVIE', 'RATING'], axis=1))
+# csv_data_frame_v2 = csv_data_frame.set_index('USER')
+# print('\n', csv_data_frame_v2.filter(items=['MOVIE', 'RATING'], axis=1))
 
 # printing RATINGs by order of RATINGs under 3.5 in descending order.
-print('\n', csv_data_frame[csv_data_frame['RATING'] <= 5.0].sort_values(by=['USER', 'RATING'], ascending=[True, True]))
+# print('\n', csv_data_frame[csv_data_frame['RATING'] <= 3.5].sort_values(by=['USER', 'RATING'], ascending=[True, True]))
 
+# type code here...
