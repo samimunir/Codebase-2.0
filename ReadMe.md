@@ -23,3 +23,6 @@ Sami Munir | Rutgers University | Codebase 2.0
     * Filtering & Ordering
 * __Aicraft Data Analytics Project__
 ### 5. C Programming Mastery
+### 6. C# Data Structures & Algorithms
+* Hello World
+* Arrays
