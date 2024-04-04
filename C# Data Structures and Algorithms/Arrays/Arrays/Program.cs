@@ -7,20 +7,10 @@
         > Program.cs
 */
 
-Console.WriteLine("Arrays in C#!");
+public class Program {
+    public static void Main() {
+        Console.WriteLine("Array Data Structure C#");
 
-/*
-    int array for main program.
-*/
-int[] main_array = new int[6];
-int pointer = -1;
-
-for (int i = 0; i < main_array.Length; i++) {
-    pointer++;
-    main_array[i] = (i + 1);
+        ArrayDS main_array = new ArrayDS();
+    }
 }
-
-// Console.WriteLine("main_array[]: " + main_array + "\n\tpointer: " + pointer);
-Console.Write("main_array[]: [");
-main_array.ToList().ForEach(i => Console.Write(" " + i.ToString()));
-Console.WriteLine(" ]\n\tpointer: " + pointer);

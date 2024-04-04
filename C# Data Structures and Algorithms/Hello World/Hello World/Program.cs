@@ -11,5 +11,5 @@ Console.WriteLine("Hello world!");
 int x = 2;
 int y = 5;
 int z = x + y;
-Console.WriteLine("x = " + x + ", y = " + y);
+Console.WriteLine("\nx = " + x + ", y = " + y);
 Console.WriteLine("z = x + y = " + z);
