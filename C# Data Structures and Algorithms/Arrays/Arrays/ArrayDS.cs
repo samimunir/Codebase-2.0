@@ -29,6 +29,14 @@ public class ArrayDS {
         return flag;
     }
 
+    private bool IsEmpty() {
+        if (main_array == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void PrintDS() {
         if (main_array == null) {
             Console.WriteLine("main_array[]: []");
