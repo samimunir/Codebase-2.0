@@ -12,5 +12,8 @@ public class Program {
         Console.WriteLine("Array Data Structure C#");
 
         ArrayDS main_array = new ArrayDS();
+
+        main_array.InsertFirst(2);
+        main_array.InsertFirst(7);
     }
 }

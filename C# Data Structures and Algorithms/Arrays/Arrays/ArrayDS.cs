@@ -3,6 +3,7 @@ public class ArrayDS {
     private int[] main_array;
     private int capacity = 0;
     private int pointer = -1;
+    private int number_of_elements = 0;
     public ArrayDS() {
         capacity = 5;
         main_array = new int[capacity];
@@ -38,14 +39,30 @@ public class ArrayDS {
     }
 
     public void PrintDS() {
-        if (main_array == null) {
+        if (IsEmpty()) {
             Console.WriteLine("main_array[]: []");
-            Console.WriteLine("\tpointer: " + pointer);
         } else {
             Console.Write("main_array[]: [");
             main_array.ToList().ForEach(i => Console.Write(" " + i.ToString()));
             Console.Write(" ]\n");
-            Console.WriteLine("\tpointer: " + pointer);
         }
+        Console.WriteLine("\tpointer: " + pointer);
+        Console.WriteLine("\tnumber of elements: " + number_of_elements);
+    }
+
+    public void InsertFirst(int data) {
+        Console.WriteLine("\nInsertFirst(" + data + ") called...");
+        if (pointer == -1) {
+            pointer++;
+            main_array[0] = data;
+        } else {
+            pointer++;
+            for (int i = pointer; i > 0; i--) {
+                main_array[i] = main_array[i - 1];   
+            }
+            main_array[0] = data;
+        }
+        number_of_elements++;
+        PrintDS();
     }
 }
