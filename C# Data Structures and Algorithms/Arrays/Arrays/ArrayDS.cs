@@ -17,6 +17,18 @@ public class ArrayDS {
         PrintDS();
     }
 
+    private bool IsDefault() {
+        bool flag = true;
+        for (int i = 0; i < main_array.Length; i++) {
+            if (main_array[i] == 0) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     public void PrintDS() {
         if (main_array == null) {
             Console.WriteLine("main_array[]: []");
