@@ -583,3 +583,69 @@
 */
 
 #include "my_vm.h"
+
+void set_physical_mem() {
+    /*
+        TODO: finish
+    */
+}
+
+void * translate(unsigned int vp) {
+    /*
+        TODO: finish
+    */
+}
+
+unsigned int page_map(unsigned int vp) {
+    /*
+        TODO: finish
+    */
+}
+
+void * t_malloc(size_t n) {
+    /*
+        TODO: finish
+    */
+}
+
+int t_free(unsigned int vp, size_t n) {
+    /*
+        TODO: finish
+    */
+}
+
+int put_value(unsigned int vp, void *val, size_t n) {
+    /*
+        TODO: finish
+    */
+}
+
+int get_value(unsigned int vp, void *dst, size_t n) {
+    /*
+        TODO: finish
+    */
+}
+
+void mat_multi(unsigned int a, unsigned int b, unsigned int c, size_t l, size_t m, size_t n) {
+    /*
+        TODO: finish
+    */
+}
+
+void add_TLB(unsigned int vpage, unsigned int ppage) {
+    /*
+        TODO: finish
+    */
+}
+
+int check_TLB(unsigned int vpage) {
+    /*
+        TODO: finish
+    */
+}
+
+void print_TLB_missrate() {
+    /*
+        TODO: finish
+    */
+}
