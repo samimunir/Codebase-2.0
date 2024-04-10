@@ -662,9 +662,16 @@ void set_physical_mem() {
 }
 
 void * translate(unsigned int vp) {
-    /*
-        TODO: finish
-    */
+    unsigned int pd_index = vp >> (PT_INDEX_BITS + OFFSET_BITS);
+    unsigned int pt_index = (vp >> OFFSET_BITS) & ((1 << PT_INDEX_BITS) - 1);
+    unsigned int offset = vp & ((1 << OFFSET_BITS) - 1);
+
+    void **pt = (void**) mem_manager.page_directory[pd_index];
+    if (!pt) return NULL; // Page table not present.
+
+    void *pp = pt[pt_index];
+    if (!pp) return NULL; // Page not present.
+    return (void*) ((uintptr_t) pp + offset);
 }
 
 unsigned int page_map(unsigned int vp) {
