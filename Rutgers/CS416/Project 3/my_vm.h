@@ -36,7 +36,7 @@ typedef struct {
 } memory_manager_t;
 
 /*
-    Util function prototypes.
+    Utility function prototypes.
 */
 static void initialize_memory_manager();
 

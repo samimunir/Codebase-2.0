@@ -601,6 +601,21 @@
 
 # define PD_INDEX_BITS (32 - OFFSET_BITS - PT_INDEX_BITS)
 
+/*
+    Utility functions.
+*/
+void set_bit(unsigned char *bitmap, int bit) {
+    bitmap[bit / 8] |= 1 << (bit % 8);
+}
+
+void clear_bit(unsigned char *bitmap, int bit) {
+    bitmap[bit / 8] &= ~(1 << (bit % 8));
+}
+
+int get_bit(unsigned char *bitmap, int bit) {
+    return (bitmap[bit / 8] >> (bit % 8)) & 1;
+}
+
 void set_physical_mem() {
     /*
         TODO: finish
