@@ -730,10 +730,46 @@ void * t_malloc(size_t n) {
     return first_page_address;
 }
 
+/*
+    function t_free()
+    - does not need to handle fragmentation (per project description)
+*/
 int t_free(unsigned int vp, size_t n) {
     /*
-        TODO: finish
+        Calculate the number of virtual pages to be freed.
     */
+    size_t pages_to_free = (n + PAGE_SIZE - 1) / PAGE_SIZE;
+    /*
+        Iterate over each virtual page to be freed.
+        1. calculate the virtual page index.
+        2. translate the virtual page index to a physical page index.
+    */
+    for (size_t i = 0; i < pages_to_free; ++i) {
+        unsigned int vp_index = vp + (i * PAGE_SIZE);
+        void *pp = translate(vp_index);
+        if (!pp) {
+            return -1;
+        }
+        /*
+            Invalidate the page table entry.
+        */
+        unsigned int pd_index = vp_index >> (PT_INDEX_BITS + OFFSET_BITS);
+        unsigned int pt_index = (vp_index >> OFFSET_BITS) & ((1 << PT_INDEX_BITS) - 1);
+        ((void**) mem_manager.page_directory[pd_index])[pt_index] = NULL;
+        /*
+            Clear the corresponding bit in the virtual memory bitmap.
+        */
+        set_bit(&mem_manager.virt_bitmap, vp_index / PAGE_SIZE);
+        /*
+            Mark the physical page as free in the physical memory bitmap.
+        */
+        unsigned int physical_page_index = ((uintptr_t) pp - (uintptr_t) mem_manager.physical_mem) / PAGE_SIZE;
+        clear_bit(&mem_manager.phys_bitmap, physical_page_index);
+    }
+    /*
+        Return 0 for success.
+    */
+    return 0;
 }
 
 int put_value(unsigned int vp, void *val, size_t n) {
