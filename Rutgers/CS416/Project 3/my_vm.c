@@ -582,7 +582,24 @@
     - etc.
 */
 
+/*
+    Required includes (libraries).
+*/
 #include "my_vm.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdint.h>
+
+/*
+    Required global variables.
+*/
+#define OFFSET_BITS ((int) log2 (PAGE_SIZE))
+
+# define PT_INDEX_BITS ((32 - OFFSET_BITS) / 2)
+
+# define PD_INDEX_BITS (32 - OFFSET_BITS - PT_INDEX_BITS)
 
 void set_physical_mem() {
     /*
