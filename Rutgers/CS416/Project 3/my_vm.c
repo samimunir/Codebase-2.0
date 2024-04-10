@@ -653,9 +653,12 @@ static void initialize_memory_manager() {
 }
 
 void set_physical_mem() {
-    /*
-        TODO: finish
-    */
+    initialize_memory_manager();
+    mem_manager.physical_mem = malloc(MEMSIZE);
+    if (!mem_manager.physical_mem) {
+        perror("Failed to allocate physical memory.");
+        exit(1);
+    }
 }
 
 void * translate(unsigned int vp) {
