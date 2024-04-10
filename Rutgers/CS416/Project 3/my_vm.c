@@ -616,6 +616,42 @@ int get_bit(unsigned char *bitmap, int bit) {
     return (bitmap[bit / 8] >> (bit % 8)) & 1;
 }
 
+unsigned int get_next_avail(unsigned char *bitmap, size_t size) {
+    /*
+        Loop through the bitmap to find an unset bit.
+    */
+    for (size_t i = 0; i < size * 8; i++) {
+        if (!get_bit(bitmap, i)) {
+            return i;
+        }
+    }
+    /*
+        Indicate failure if not free bit is found.
+    */
+    return -1;
+}
+
+static void initialize_memory_manager() {
+    /*
+        Allocate and clear the physical memory bitmap.
+    */
+    size_t bitmap_size = MEMSIZE / PAGE_SIZE / 8; // Number of bytes needed.
+    mem_manager.phys_bitmap = (unsigned char*) malloc(bitmap_size);
+    memset(mem_manager.phys_bitmap, 0, bitmap_size);
+    /*
+        Allocate and clear the virtual memory bitmap.
+    */
+    mem_manager.virt_bitmap = (unsigned char*) malloc(bitmap_size); // Same size for simplicity.
+    memset(mem_manager.virt_bitmap, 0, bitmap_size);
+    /*
+        Initialize the page directory.
+    */
+    mem_manager.page_directory = (void**) malloc(sizeof(void*) * (1 << PD_INDEX_BITS));
+    for (int i = 0; i < (1 << PD_INDEX_BITS); i++) {
+        mem_manager.page_directory[i] = NULL; // Initially, no page tables are allocated.
+    }
+}
+
 void set_physical_mem() {
     /*
         TODO: finish

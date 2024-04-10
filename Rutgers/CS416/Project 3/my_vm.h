@@ -35,12 +35,14 @@ typedef struct {
     void **page_directory;
 } memory_manager_t;
 
+static memory_manager_t mem_manager;
+
 /*
     Utility function prototypes.
 */
 static void initialize_memory_manager();
 
-static unsigned int get_next_avail(unsigned char bitmap, size_t size);
+unsigned int get_next_avail(unsigned char *bitmap, size_t size);
 
 /*
     Necessary function prototypes.
