@@ -35,8 +35,10 @@ int main(int argc, char* argv[]) {
         printf("Failed to map virtual page 0x%x\n", vp_to_map);
     }
 
-    // Test t_malloc() and t_free()
-    printf("\nTesting t_malloc() and t_free()\n");
+    /*
+        Testing functions t_malloc() and t_free()
+    */
+    printf("\nTesting functions t_malloc() and t_free()\n");
     size_t size_to_allocate = 4096; // 1 page
     void *allocated_memory = t_malloc(size_to_allocate);
     if (allocated_memory != NULL) {
@@ -48,8 +50,10 @@ int main(int argc, char* argv[]) {
         printf("Failed to allocate memory\n");
     }
 
-    // Test put_value() and get_value()
-    printf("\nTesting put_value() and get_value()\n");
+    /*
+        Testing functions put_value() & get_value()
+    */
+    printf("\nTesting functions put_value() & get_value()\n");
     unsigned int virtual_address2 = 0x3000;
     int value_to_put = 42;
     put_value(virtual_address2, &value_to_put, sizeof(int));
@@ -57,6 +61,7 @@ int main(int argc, char* argv[]) {
     get_value(virtual_address2, &retrieved_value, sizeof(int));
     printf("Value retrieved from virtual address 0x%x: %d\n", virtual_address2, retrieved_value);
 
+    /*
     // Test mat_mult()
     printf("\nTesting mat_mult()\n");
     unsigned int matrix_a = 0x4000;
@@ -82,6 +87,7 @@ int main(int argc, char* argv[]) {
     // Test print_TLB_missrate()
     printf("\nTesting print_TLB_missrate()\n");
     print_TLB_missrate();
+    */
 
     return EXIT_SUCCESS;
 }

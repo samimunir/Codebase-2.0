@@ -1,23 +1,34 @@
-OBJS = my_vm.o test.o
-SOURCE = my_vm.c test.c
-HEADER = my_vm.h
-OUT = my_vm
-FLAGS = -g -c -Wall -m32 # Add -m32 here for 32-bit compilation
-LFLAGS = -lpthread -m32 # Add -m32 here to ensure linking is done for 32-bit
 CC = gcc
+CFLAGS = -g -Wall -m32 -c  # Compilation flags
+AR = ar -rc                 # Command to create a static library
+RANLIB = ranlib             # Command to index the static library
+LDFLAGS = -m32 -pthread             # Linking flags, used for linking the test executable
 
-.PHONY: all clean run
+# Object files needed by the library
+OBJECTS = my_vm.o
 
-all: $(OUT)
+# The library we're compiling
+LIBRARY = libmy_vm.a
 
-$(OUT): $(OBJS)
-	$(CC) -g $^-o$@$(LFLAGS)
+# Phony targets for clean and all
+.PHONY: all clean test
 
-%.o:%.c$(HEADER)
-	$(CC) $(FLAGS) $< -o $@
+# Default target builds the library and then the test executable
+all: $(LIBRARY) test
 
+# Rule to make the library
+$(LIBRARY): $(OBJECTS)
+	$(AR) $@ $^
+	$(RANLIB) $@
+
+# Rule to compile the test executable
+test: test.o $(LIBRARY)
+	$(CC) $(LDFLAGS) -o test test.o -L. -lmy_vm
+
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
+
+# Clean rule for removing compiled files
 clean:
-	rm -f $(OBJS) $(OUT)
-
-run: $(OUT)
-	./$(OUT)
+	rm -rf *.o $(LIBRARY) test
