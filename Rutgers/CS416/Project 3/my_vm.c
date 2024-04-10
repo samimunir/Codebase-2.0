@@ -707,9 +707,27 @@ unsigned int page_map(unsigned int vp) {
 }
 
 void * t_malloc(size_t n) {
-    /*
-        TODO: finish
-    */
+    size_t pages_needed = (n + PAGE_SIZE - 1) / PAGE_SIZE;
+    void *first_page_address = NULL; // To hold the address of the first allocated page.
+
+    for (size_t i = 0; i < pages_needed; ++i) {
+        /*
+            Calculate bitmap_size within the function's scope if
+                it is not declared as a global variable.
+        */
+        size_t bitmap_size = MEMSIZE / PAGE_SIZE / 8;
+        unsigned int vp_index = get_next_avail(mem_manager.virt_bitmap, bitmap_size);
+        if (vp_index == (unsigned int) -1) {
+            perror("Failed to find a free virtual page.");
+            return NULL;
+        }
+        if (i == 0) {
+            first_page_address = page_map(vp_index * PAGE_SIZE);
+        } else {
+            page_map(vp_index * PAGE_SIZE); // Mapping additional pages.
+        }
+    }
+    return first_page_address;
 }
 
 int t_free(unsigned int vp, size_t n) {
