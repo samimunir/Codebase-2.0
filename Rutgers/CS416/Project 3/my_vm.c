@@ -824,8 +824,49 @@ int put_value(unsigned int vp, void *val, size_t n) {
 
 int get_value(unsigned int vp, void *dst, size_t n) {
     /*
-        TODO: finish
+        Error handling for invalid virtual address.
     */
+    void *pp = translate(vp);
+    if (!pp) {
+        return -1;
+    }
+
+    /*
+        Calculate the number of bytes within the first page.
+    */
+    size_t bytes_in_first_page = PAGE_SIZE - (vp % PAGE_SIZE);
+    size_t bytes_to_copy = n;
+
+    /*
+        Handle data transfer across multiple pages (if applicable).
+    */
+    while (bytes_to_copy > 0) {
+        size_t bytes_to_transfer = (bytes_to_copy < bytes_in_first_page) ? bytes_to_copy : bytes_in_first_page;
+        memcpy(dst, (void*) ((uintptr_t) pp + (vp % PAGE_SIZE)), bytes_to_transfer);
+        /*
+            Update for next iteration (if more pages involved).
+        */
+        vp += bytes_to_transfer;
+        dst += bytes_to_transfer;
+        bytes_to_copy -= bytes_to_transfer;
+        /*
+            Translate virtual address for next page (if applicable).
+        */
+        if (bytes_to_copy > 0) {
+            pp = translate(vp);
+            /*
+                Handle error: trying to write beyond allocated memory.
+            */
+            if (!pp) {
+                return -1;
+            }
+            bytes_in_first_page = PAGE_SIZE;
+        }
+    }
+    /*
+        Return 0 for success.
+    */
+    return 0;
 }
 
 void mat_multi(unsigned int a, unsigned int b, unsigned int c, size_t l, size_t m, size_t n) {
