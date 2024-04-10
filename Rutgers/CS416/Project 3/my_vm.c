@@ -676,8 +676,34 @@ void * translate(unsigned int vp) {
 
 unsigned int page_map(unsigned int vp) {
     /*
-        TODO: finish
+        Ensure bitmap_size is declared and calculated within this function's scope.
     */
+    size_t bitmap_size = MEMSIZE / PAGE_SIZE / 8;
+    
+    unsigned int pd_index = vp >> (PT_INDEX_BITS + OFFSET_BITS);
+    unsigned int pt_index = (vp >> OFFSET_BITS) & ((1 << PT_INDEX_BITS) - 1);
+
+    if (!mem_manager.page_directory[pd_index]) {
+        /*
+            Allocate page table if not already present.
+        */
+        mem_manager.page_directory[pd_index] = malloc(sizeof(void*) * (1 << PT_INDEX_BITS));
+        memset(mem_manager.page_directory[pd_index], 0, sizeof(void*) * (1 << PT_INDEX_BITS));
+    }
+
+    void **pt = (void**) mem_manager.page_directory[pd_index];
+
+    if (!pt[pt_index]) {
+        /*
+            Map virtual page to physical page.
+        */
+        size_t bitmap_size = MEMSIZE / PAGE_SIZE / 8; // Re-declare bitmap_size if not globally defined.
+        unsigned int pp_index = get_next_avail(mem_manager.phys_bitmap, bitmap_size);
+        pt[pt_index] = (void*) ((uintptr_t) mem_manager.physical_mem + (pp_index * PAGE_SIZE));
+
+        set_bit(mem_manager.phys_bitmap, pp_index);
+        set_bit(mem_manager.virt_bitmap, vp / PAGE_SIZE);
+    }
 }
 
 void * t_malloc(size_t n) {
