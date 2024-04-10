@@ -13,7 +13,16 @@ public class Program {
 
         ArrayDS main_array = new ArrayDS();
 
+        /*
+            Testing function InsertFirst()
+        */
         main_array.InsertFirst(2);
         main_array.InsertFirst(7);
+        main_array.InsertFirst(0);
+        main_array.InsertFirst(156);
+
+        // main_array.RemoveFirst();
+        // main_array.RemoveFirst();
+        // main_array.RemoveFirst();
     }
 }

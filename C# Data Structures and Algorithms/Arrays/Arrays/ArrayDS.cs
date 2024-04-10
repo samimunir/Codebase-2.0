@@ -25,6 +25,7 @@ public class ArrayDS {
                 flag = true;
             } else {
                 flag = false;
+                return flag;
             }
         }
         return flag;
@@ -64,5 +65,25 @@ public class ArrayDS {
         }
         number_of_elements++;
         PrintDS();
+    }
+
+    public void RemoveFirst() {
+        if (IsEmpty()) {
+            Console.WriteLine("\nRemoveFirst() called...\n--<ERROR>-- cannot remove from empty/null array.");
+            PrintDS();
+            return;
+        } else {
+            if (pointer - 1 < -1) {
+                Console.WriteLine("\nMaximum remove operations complete.");
+            } else {
+                for (int i = 0; i < pointer; i++) {
+                    main_array[i] = main_array[i + 1];
+                }
+                main_array[pointer] = 0;
+                number_of_elements--;
+                pointer--;
+            }
+            PrintDS();
+        }
     }
 }
