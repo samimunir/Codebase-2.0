@@ -1,57 +1,50 @@
-/*
-    Required includes (libraries).
-*/
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <sys/mman.h>
 #include <stdint.h>
 
-/*
-    Required definitions.
-*/
-#define MAX_MEMSIZE (1UL << 32)
-#define MEMSIZE (1UL << 30)
+#define MAX_MEMSIZE (1ULL<<32)
+#define MEMSIZE (1ULL<<30)
 #define TLB_ENTRIES 256
 #define PAGE_SIZE 8192
 
-/*
-    Required structure & global variable definitions.
-*/
+
+
+// Structures and global variables
 typedef struct {
-    /*
-        Physical memory simulation.
-    */
+    // Physical memory simulation
     void *physical_mem;
-    /*
-        Bitmaps for physical and virtual memory.
-    */
-    unsigned char phys_bitmap;
-    unsigned char virt_bitmap;
-    /*
-        Two-level page table directory.
-    */
+    // Bitmaps for physical and virtual memory
+    unsigned char *phys_bitmap;
+    unsigned char *virt_bitmap;
+    // Two-level page table directory
     void **page_directory;
+     void **vp_to_pp_map; // Direct mapping from VP to physical address
+    
 } memory_manager_t;
 
-static memory_manager_t mem_manager;
+typedef struct {
+    unsigned int valid;  // Valid bit to indicate if the entry is in use
+    unsigned int vpage;  // Virtual page number
+    unsigned int ppage;  // Physical page number
+} TLB_entry;
 
-/*
-    Utility function prototypes.
-*/
-static void initialize_memory_manager();
 
+void initialize_memory_manager(void);
+void set_bit(unsigned char *bitmap, int bit);
+void clear_bit(unsigned char *bitmap, int bit);
+int get_bit(unsigned char *bitmap, int bit);
 unsigned int get_next_avail(unsigned char *bitmap, size_t size);
 
-/*
-    Necessary function prototypes.
-*/
+
 void set_physical_mem();
 
 void * translate(unsigned int vp);
 
-unsigned int page_map(unsigned int vp);
+void* page_map(unsigned int vp);
 
 void * t_malloc(size_t n);
 

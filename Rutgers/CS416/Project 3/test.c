@@ -1,93 +1,108 @@
 #include "my_vm.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-int main(int argc, char* argv[]) {
-    /*
-        Testing function set_physical_mem()
-    */
-    printf("Testing set_physical_mem()\n");
+void test_set_and_clear_bit() {
+    printf("Testing set_bit and clear_bit...\n");
+    unsigned char bitmap = 0; // Start with all bits cleared
+
+    set_bit(&bitmap, 1);
+    assert(get_bit(&bitmap, 1) == 1);
+    
+    clear_bit(&bitmap, 1);
+    assert(get_bit(&bitmap, 1) == 0);
+
+    printf("set_bit and clear_bit passed.\n");
+}
+
+void test_page_mapping_and_translation() {
+    printf("Testing page_map and translate...\n");
     set_physical_mem();
-    printf("Physical memory initialized successfully!\n");
 
-    /*
-        Testing function translate()
-    */
-    printf("\nTesting translate()\n");
-    unsigned int virtual_address = 0x1000;
-    void *physical_address = translate(virtual_address);
-    if (physical_address != NULL) {
-        printf("Translated virtual address 0x%x to physical address: %p\n", virtual_address, physical_address);
-    } else {
-        printf("Translation failed for virtual address 0x%x\n", virtual_address);
+    unsigned int vp = 0x12345; // Example virtual address
+    void* mapped_addr = page_map(vp);
+    assert(mapped_addr != NULL);
+
+    void* translated_addr = translate(vp);
+    printf("Mapped address: %p, Translated address: %p\n", (void*)mapped_addr, (void*)translated_addr);
+    assert(translated_addr == mapped_addr);
+    
+
+    
+
+    printf("page_map and translate passed.\n");
+}
+
+void test_memory_allocation_and_free() {
+    printf("Testing t_malloc and t_free...\n");
+    set_physical_mem();
+
+    size_t size = PAGE_SIZE; // Allocate one page
+    void* addr = t_malloc(size);
+    assert(addr != NULL);
+
+    int free_result = t_free((unsigned int)addr, size);
+    assert(free_result == 0);
+
+    printf("t_malloc and t_free passed.\n");
+}
+
+void test_put_and_get_value() {
+    printf("Testing put_value and get_value...\n");
+    set_physical_mem();
+
+    void* addr = t_malloc(PAGE_SIZE);
+    char test_data[] = "Hello, VM!";
+    put_value((unsigned int)addr, test_data, strlen(test_data) + 1);
+
+    char buffer[50];
+    get_value((unsigned int)addr, buffer, strlen(test_data) + 1);
+    printf("test_data: %p, buffer: %p\n", (void*)test_data, (void*)buffer);
+    assert(strcmp(test_data, buffer) == 0);
+
+    printf("put_value and get_value passed.\n");
+}
+
+void test_mat_mult() {
+    set_physical_mem();
+    size_t l = 3, m = 3, n = 3; // dimensions of the matrices
+    unsigned int mat1[l][m], mat2[m][n], answer[l][n];
+
+    // Initialize mat1 and mat2 with some values
+    for (size_t i = 0; i < l; ++i) {
+        for (size_t j = 0; j < m; ++j) {
+            mat1[i][j] = i + j;
+            mat2[j][i] = i - j;
+        }
     }
 
-    /*
-        Testing function page_map()
-    */
-    printf("\nTesting page_map()\n");
-    unsigned int vp_to_map = 0x2000;
-    void *mapped_page = page_map(vp_to_map);
-    if (mapped_page != NULL) {
-        printf("Mapped virtual page 0x%x to physical page: %p\n", vp_to_map, mapped_page);
-    } else {
-        printf("Failed to map virtual page 0x%x\n", vp_to_map);
+    // Perform matrix multiplication
+    mat_mult((unsigned int)mat1, (unsigned int)mat2, (unsigned int)answer, l, m, n);
+
+    // Print the resulting matrix
+    printf("Resulting matrix:\n");
+    for (size_t i = 0; i < l; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            printf("%d ", answer[i][j]);
+        }
+        printf("\n");
     }
+}
 
-    /*
-        Testing functions t_malloc() and t_free()
-    */
-    printf("\nTesting functions t_malloc() and t_free()\n");
-    size_t size_to_allocate = 4096; // 1 page
-    void *allocated_memory = t_malloc(size_to_allocate);
-    if (allocated_memory != NULL) {
-        printf("Allocated memory of size %zu bytes at address: %p\n", size_to_allocate, allocated_memory);
-        // Free the allocated memory
-        t_free((unsigned int)allocated_memory, size_to_allocate);
-        printf("Freed memory allocated at address: %p\n", allocated_memory);
-    } else {
-        printf("Failed to allocate memory\n");
-    }
 
-    /*
-        Testing functions put_value() & get_value()
-    */
-    printf("\nTesting functions put_value() & get_value()\n");
-    unsigned int virtual_address2 = 0x3000;
-    int value_to_put = 42;
-    put_value(virtual_address2, &value_to_put, sizeof(int));
-    int retrieved_value;
-    get_value(virtual_address2, &retrieved_value, sizeof(int));
-    printf("Value retrieved from virtual address 0x%x: %d\n", virtual_address2, retrieved_value);
 
-    /*
-    // Test mat_mult()
-    printf("\nTesting mat_mult()\n");
-    unsigned int matrix_a = 0x4000;
-    unsigned int matrix_b = 0x5000;
-    unsigned int matrix_c = 0x6000;
-    size_t rows = 3;
-    size_t cols = 3;
-    mat_mult(matrix_a, matrix_b, matrix_c, rows, cols, cols);
-    printf("Matrix multiplication performed successfully\n");
 
-    // Test add_TLB() and check_TLB()
-    printf("\nTesting add_TLB() and check_TLB()\n");
-    unsigned int virtual_page = 0x7000;
-    unsigned int physical_page = 0x8000;
-    add_TLB(virtual_page, physical_page);
-    int result = check_TLB(virtual_page);
-    if (result != -1) {
-        printf("TLB hit: Virtual page 0x%x maps to physical page: 0x%x\n", virtual_page, result);
-    } else {
-        printf("TLB miss for virtual page 0x%x\n", virtual_page);
-    }
+    
 
-    // Test print_TLB_missrate()
-    printf("\nTesting print_TLB_missrate()\n");
-    print_TLB_missrate();
-    */
+int main() {
+   test_set_and_clear_bit();
+   
+    
+   test_page_mapping_and_translation();
+    test_memory_allocation_and_free();
+    test_put_and_get_value();
+    test_mat_mult();
 
-    return EXIT_SUCCESS;
+    return 0;
 }
