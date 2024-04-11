@@ -1,0 +1,1 @@
+int* init_static_array(int size);

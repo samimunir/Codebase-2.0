@@ -7,10 +7,7 @@ Sami Munir | Rutgers University | Codebase 2.0
     This project consists of an interactive and improved version of a todo list. Some of the features and functionalities include a dynamic representation of task completion progress, animated buttons, hover effects, and animated completion for task items. Time stamps are also dynamically displayed using Javascript. Error handling logic is also implemented in the various script functions.
 * __Aircraft Data Analytics Project -__ *Python, pandas*
 ### 2. Data Structures and Algorithms
-* singly-linked-list - *C*
-    * singly-linked-list.c
-* doubly-linked-list - *C*
-* linked-list-stack - *C*
+* static-array - *C*
 ### 3. Rutgers
 * __CS210__
     * Assignment 3
