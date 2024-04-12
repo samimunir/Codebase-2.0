@@ -15,6 +15,9 @@
 int main(int argc, char* argv[]) {
     printf("\nstatic-array implementation in C\n");
 
+    /*
+        Testing function init_static_array()
+    */
     struct static_array *static_array = init_static_array(3);
 
     return EXIT_SUCCESS;
