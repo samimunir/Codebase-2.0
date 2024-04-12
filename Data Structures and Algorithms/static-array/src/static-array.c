@@ -20,3 +20,11 @@ int* init_static_array(int size) {
         }
     }
 }
+
+bool is_valid(int* static_array) {
+    if (static_array == NULL) {
+        return false;
+    } else {
+        return true;
+    }
+}
