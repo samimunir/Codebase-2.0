@@ -2,29 +2,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int* init_static_array(int size) {
+struct static_array {
+    int* array;
+    int size;
+    int number_of_elements;
+    int total_memory;
+    int used_memory;
+    int memory_available;
+};
+
+struct static_array * init_static_array(int size) {
     if (size <= 0) {
-        printf("\ninit_static_array(%d) called...\n--<ERROR>-- invalid [size] input.\n", size);
+        printf("\ninit_static_array(%d) called...\n", size);
+        printf("\t--<ERROR>-- cannot initialize static_array[] with size [%d].\n", size);
         return NULL;
     } else {
+        struct static_array* array = (struct static_array*) malloc(sizeof(struct static_array));
+        array -> array = (int*) malloc(size * sizeof(int));
+        array -> size = size;
+        array -> number_of_elements = 0;
+        array -> total_memory = array -> size * sizeof(int);
+        array -> memory_available = array -> total_memory;
+        array -> used_memory = 0; 
         printf("\ninit_static_array(%d) called...\n", size);
-        int* static_array_pointer = (int*) malloc(size * sizeof(int));
-        if (static_array_pointer == NULL) {
-            printf("\t--<ERROR>-- dynamic memory allocation failure.\n");
-            return NULL;
-        } else {
-            printf("\tstatic_array[] successfully initialized.\n");
-            printf("\tsize: %d\n", size);
-            printf("\tmemory: %d bytes\n", (size * sizeof(int)));
-            return static_array_pointer;
-        }
-    }
-}
-
-bool is_valid(int* static_array) {
-    if (static_array == NULL) {
-        return false;
-    } else {
-        return true;
+        printf("\tstatic_array[] initialized to size [%d].\n", size);
+        printf("\t\tnumber_of_elements: %d\n", array -> number_of_elements);
+        printf("\t\ttotal_memory: %d bytes\n", array -> total_memory);
+        printf("\t\tmemory_available: %d bytes\n", array -> memory_available);
+        printf("\t\tused_memory: %d bytes\n", array -> used_memory);
+        return array;
     }
 }
